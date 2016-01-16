@@ -13,9 +13,10 @@ public class Client {
 	private Socket s;
 	private InputStream is;
 	private OutputStream os;
-	
+	private boolean connected;
 	public Client(String name){
 		setName(name);
+		connected = false;
 	}
 	
 	public String getName(){
@@ -25,13 +26,16 @@ public class Client {
 	public void setName(String name){
 		this.name = name;
 	}
-	
+	public boolean isConnected(){
+		return connected;
+	}
 	public void connectServer(String address,int port) throws UnknownHostException, IOException{
 		s = new Socket(address,port);
 		is = s.getInputStream();
 		os = s.getOutputStream();
+		connected = true;
 	}
-	
+	/** Returns a message from the other side of the server, the client needs to be connected */
 	public String getMessage() throws IOException{
 		byte[] buffer = new byte[MESSAGE_SIZE];
 		is.read(buffer);
